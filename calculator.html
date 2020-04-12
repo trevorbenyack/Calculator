@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        #wrapper {
+            color: black;
+            width: 337px;
+            height: 500px;
+            margin: auto;
+            border-style: solid;
+            border-color: black;
+            border-width: 3px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            padding: 0;
+            font-size: 0;
+        }
+        #answerbox {
+            position: relative;
+            width: 100%;
+            height: 25%;
+            background-color:#383b3e;
+            color: #e8e9e9;
+            text-align: right;
+        }
+        #answertext {
+            padding-right: 4px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            font-size: 80pt;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .button {
+            border-style: solid;
+            border-color: black;
+            border-width: 1px;
+            height: 15%;
+            width: 25%;
+            float: left;
+            box-sizing: border-box;
+            text-align: center;
+            font-size: 20pt;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #e8e9e9;
+            padding: 6% 0;
+
+            user-select: none; /* supported by Chrome and Opera */
+            -webkit-user-select: none; /* Safari */
+            -khtml-user-select: none; /* Konqueror HTML */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none;
+        }
+        .button:active {
+            background-color: lightgray;
+        }
+        .number {
+            background-color: #696b6d;
+
+        }
+        .operator {
+            background-color: #ff9f0a;
+        }
+        .operator_equal {
+            background-color: #ff9f0a;
+        }
+        .other {
+            background-color: #4b4e50;
+        }
+        .zero {
+            width: 50%;
+        }
+
+        .result {
+            font-size: 30px;
+            color: red;
+        }
+        .current_number {
+            font-size: 30px;
+            color: red;
+        }
+        .last_operator {
+            font-size: 30px;
+            color: red;
+        }
+        .console {
+            font-size: 30px;
+            color: red;
+        }
+        
+    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        
+        $(document).ready(function(){
+            // initializing "values"
+            let currentNum = null;
+            let result = null;
+            let lastOperator = null;
+            let afterEqual = false;
+            let c_counter = 0;
+
+            // Everytime a number is pressed, it begins to build a string.
+            // This string is cleared out throughout the program after it is used.
+            $(".number").click(function(){
+                c_counter = 0;
+                $("#C").text("C")
+                if (currentNum == null) // prevents "null" from being the start of the string
+                {
+                    currentNum = "";
+                }
+                currentNum += ($(this).text()); // number-string builder
+                $("#answertext").text(currentNum); // prints to the calculator after each press
+
+                // REMOVE (Testing output)
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+
+            });
+            
+            // this next section encompases the operators
+            // each operator calls the currentNumFunction which converts
+            // the currentNum string into a number.
+            // during the inital number-entry of a calculation,
+            // currentNumFunction assigns result to the initial currentNum value.
+            // this is done so that the calculation can be performed after pressing
+            // another operator or the equal sign. 
+            //
+            // the operatorFunction passes the individual operator to the function
+            // to perform the correct arithmetic.
+            // 
+            // after the arithmetic is performed, currentNum is set back to null
+            // so that the next number can be entered.
+            $("#plus").click(function(){
+                currentNumFunction()
+                operatorFunction('#plus');
+                currentNum = null;
+                
+                // REMOVE (Testing output)
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+
+            });
+            $("#minus").click(function(){
+                currentNumFunction()
+                operatorFunction('#minus');
+                currentNum = null;
+
+                // REMOVE (Testing output)
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+
+            });
+            $("#multiply").click(function(){
+                currentNumFunction()
+                operatorFunction('#multiply');
+                currentNum = null;
+
+                // REMOVE (Testing output)
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+
+            });
+            $("#divide").click(function(){
+                currentNumFunction()
+                operatorFunction('#divide');
+                currentNum = null;
+
+                // REMOVE (Testing output)
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+
+            });
+
+            // performs the final arithmetic for the calculation
+            // resets all values except for result
+            // result is not reset so that it can be used in 
+            // another calculation if desired.
+            $(".operator_equal").click(function(){
+                result = doMath();
+                $(".result").text(result)
+                $("#answertext").text(result)
+                currentNum = null;
+                lastOperator = null;
+                afterEqual = true;
+
+                // REMOVE (Testing output)
+                $(".result").text(result);
+                $(".current_number").text(currentNum);
+                $(".last_operator").text(lastOperator);
+
+            });
+
+            // first click clears the calculator output and any number
+            // entered. also changes "C" to "AC"
+            // second click clears all values, as if the page were refreshed
+            $("#C").click(function(){
+                c_counter++; // used to determine to use C or AC functionality
+
+                //REMOVE (TESTING OUTPUT)
+                $(".console").text("c_counter is " + c_counter)
+
+                if (c_counter == 1) {
+                    currentNum = null;
+                    $("#answertext").text(0)
+                    $("#C").text("AC")
+                }
+                else if (c_counter > 1) {
+                    currentNum = null;
+                    result = null;
+                    lastOperator = null;
+                    afterEqual = false;
+                }
+
+                // REMOVE (Testing output)
+                $(".result").text(result);
+                $(".current_number").text(currentNum);
+                $(".last_operator").text(lastOperator);
+            });
+            // The next two operators transform the current result
+            // piggy-backs off of the operators set-up
+            // uses currentNumFunction to get the appropriate
+            // result value to perform the transformation on
+            $("#plus_minus").click(function(){
+                currentNumFunction()
+                result = result * -1;
+                currentNum = null;
+                $("#answertext").text(result)
+
+                // REMOVE (Testing output)
+                $(".result").text(result);
+                $(".current_number").text(currentNum);
+                $(".last_operator").text(lastOperator);
+            });
+            $("#percentage").click(function(){
+                currentNumFunction()
+                result = result * 100;
+                currentNum = null;
+                $("#answertext").text(result + "%")
+
+                // REMOVE (Testing output)
+                $(".result").text(result);
+                $(".current_number").text(currentNum);
+                $(".last_operator").text(lastOperator);
+            });
+
+            // used to determine correct result to use in initial calcuation
+            // and after pressing the equal button
+            function currentNumFunction(){
+                // if equal has been pressed -and- user directly types another number to start a new calculation
+                if (afterEqual == true && currentNum != null)
+                {
+                    currentNum = Number(currentNum);
+                    result = currentNum;
+                    $("#answertext").text(result);
+                    afterEqual = false;
+                }
+                // if first operator press after page refresh or after "C" button press
+                else if (result == null && currentNum != null)
+                {
+                    currentNum = Number(currentNum);
+                    result = currentNum;
+                    $("#answertext").text(result);
+                }
+                // if second operator press of a calculations
+                else if (result != null && currentNum != null)
+                {
+                    currentNum = Number(currentNum);
+                    $("#answertext").text(result);
+                }
+
+                // REMOVE (TESTING OUTPUT)
+                $(".result").text(result);
+                $(".current_number").text(currentNum);
+                $(".last_operator").text(lastOperator);
+            }
+            
+            // because of the way a user enters the input, the calculation 
+            // cannot be performed until after the second number (i.e. currentNum)
+            // has been entered and then either the next operator is pressed
+            // or the equal button is pressed.
+            // 
+            // if it is the very first time an operator is pressed, that operator
+            // is stored as lastOperator and then it is used to determine which
+            // calculation to perform after the following operator or the equal button
+            // has been pressed.
+            function operatorFunction(operatorString){
+                if (lastOperator == null) {
+                    lastOperator = $(operatorString).text()
+                }
+                else {
+                    result = doMath();
+                    $("#answertext").text(result)
+                    lastOperator = $(operatorString).text()
+                }
+
+                // REMOVE: TESTING OUTPUT
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+            }
+
+            // because math
+            function doMath(){
+                switch (lastOperator){
+                        case "+": result = result + Number(currentNum); break;
+                        case "-": result = result - Number(currentNum); break;
+                        case "*": result = result * Number(currentNum); break;
+                        case "/": result = result / Number(currentNum); break;
+                    };
+                    return result;
+            }
+        });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <div id="answerbox"><div id="answertext">0</div></div>
+        <div id="C" class="button other">C</div>
+        <div id="plus_minus"class="button other">+/-</div>
+        <div id="percentage" class="button other">%</div>
+        <div id="divide" class="button operator">/</div>
+        <div class="button number">7</div>
+        <div class="button number">8</div>
+        <div class="button number">9</div>
+        <div id="multiply" class="button operator">*</div>
+        <div class="button number">4</div>
+        <div class="button number">5</div>
+        <div class="button number">6</div>
+        <div id="minus" class="button operator">-</div>
+        <div class="button number">1</div>
+        <div class="button number">2</div>
+        <div class="button number">3</div>
+        <div id="plus" class="button operator">+</div>
+        <div class="button zero number">0</div>
+        <div class="button number">.</div>
+        <div class="button operator_equal">=</div>
+
+    </div>
+    result is <div class="result">boo</div>
+    currentNum is <div class="current_number">boo</div>
+    lastOperator is <div class="last_operator">boo</div>
+    this is console stuff <div class="console">boo</div>
+</body>
+
+</html>
