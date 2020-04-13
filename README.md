@@ -9,3 +9,7 @@ Web based calculator app
 - There's not really anything new here except the jQuery stuff but I only read the couple first pages on w3c so it's not too deep
 - I left my testing output in it so you could see what happens as you press individual buttons
 - Feel free to comment, always open to feedback!
+
+## To Do
+- Have result area dynamically change font size to allow for larger numbers
+- Fix float decimal number output

@@ -207,7 +207,9 @@
                 
                 if (afterEqual == false) {
                     currentNumFunction()
-                    $(".current_number").text(currentNumLast);
+
+                    // REMOVE (TESTING OUTPUT)
+                    $(".current_number").text(currentNum);
 
                     result = doMath();
                     $(".result").text(result)
@@ -220,7 +222,8 @@
                 else if (afterEqual == true) {
                     currentNum = currentNumLast;
 
-                    $(".current_number").text(currentNumLast);
+                    // REMOVE (TESTING OUTPUT)
+                    $(".current_number").text(currentNum);
 
                     lastOperator = lastOperatorAfterEqual;
                     result = doMath();
