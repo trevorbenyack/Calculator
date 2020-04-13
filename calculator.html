@@ -101,8 +101,10 @@
         $(document).ready(function(){
             // initializing "values"
             let currentNum = null;
+            let currentNumLast = null;
             let result = null;
             let lastOperator = null;
+            let lastOperatorAfterEqual = null;
             let afterEqual = false;
             let c_counter = 0;
 
@@ -187,13 +189,30 @@
             // resets all values except for result
             // result is not reset so that it can be used in 
             // another calculation if desired.
+
             $(".operator_equal").click(function(){
-                result = doMath();
-                $(".result").text(result)
-                $("#answertext").text(result)
-                currentNum = null;
-                lastOperator = null;
-                afterEqual = true;
+
+                if (afterEqual == false) {
+                    result = doMath();
+                    $(".result").text(result)
+                    $("#answertext").text(result)
+                    lastOperatorAfterEqual = lastOperator;
+                    currentNum = null;
+                    lastOperator = null;
+                    afterEqual = true;
+                }
+                else if (afterEqual == true) {
+                    currentNum = currentNumLast;
+                    lastOperator = lastOperatorAfterEqual;
+                    result = doMath();
+                    $(".result").text(result);
+                    $("#answertext").text(result);
+                    currentNum = null;
+                    lastOperator = null;
+                    afterEqual = true;
+                }
+
+                
 
                 // REMOVE (Testing output)
                 $(".result").text(result);
@@ -262,6 +281,7 @@
                 if (afterEqual == true && currentNum != null)
                 {
                     currentNum = Number(currentNum);
+                    currentNumLast = currentNum;
                     result = currentNum;
                     $("#answertext").text(result);
                     afterEqual = false;
@@ -270,6 +290,7 @@
                 else if (result == null && currentNum != null)
                 {
                     currentNum = Number(currentNum);
+                    currentNumLast = currentNum;
                     result = currentNum;
                     $("#answertext").text(result);
                 }
@@ -277,6 +298,7 @@
                 else if (result != null && currentNum != null)
                 {
                     currentNum = Number(currentNum);
+                    currentNumLast = currentNum;
                     $("#answertext").text(result);
                 }
 
