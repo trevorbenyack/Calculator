@@ -213,7 +213,7 @@
                     currentNumFunction()
 
                     // REMOVE (TESTING OUTPUT)
-                    $(".current_number").text(currentNum);
+                    
 
                     result = doMath();
                     $(".result").text(result)
@@ -226,8 +226,6 @@
                 else if (afterEqual == true) {
                     currentNum = currentNumLast;
 
-                    // REMOVE (TESTING OUTPUT)
-                    $(".current_number").text(currentNum);
 
                     lastOperator = lastOperatorAfterEqual;
                     result = doMath();
@@ -240,7 +238,7 @@
 
                 // REMOVE (Testing output)
                 $(".result").text(result);
-                
+                $(".current_number").text(currentNum);
                 $(".last_operator").text(lastOperator);
                 $(".afterEqual").text(afterEqual);
 
@@ -273,10 +271,12 @@
                 $(".last_operator").text(lastOperator);
                 $(".afterEqual").text(afterEqual);
             });
-            // The next two operators transform the current result
-            // piggy-backs off of the operators set-up
-            // uses currentNumFunction to get the appropriate
-            // result value to perform the transformation on
+            // The next two operators transform either the currentNum 
+            // or current result. The idea is to take whatever is being 
+            // displayed in the answer (either currentNum or result) area and transform it. 
+            // currentNum is set to null after any operator is pressed, so if it is not
+            // null, then that means it is the current value shown in the display.
+            // if it is null, then result is being shown in the display.
             $("#plus_minus").click(function(){
                 
                 if (currentNum != null && afterEqual == false) {
