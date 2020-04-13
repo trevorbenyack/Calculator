@@ -204,8 +204,11 @@
             // another calculation if desired.
 
             $(".operator_equal").click(function(){
-
+                
                 if (afterEqual == false) {
+                    currentNumFunction()
+                    $(".current_number").text(currentNumLast);
+
                     result = doMath();
                     $(".result").text(result)
                     $("#answertext").text(result)
@@ -216,6 +219,9 @@
                 }
                 else if (afterEqual == true) {
                     currentNum = currentNumLast;
+
+                    $(".current_number").text(currentNumLast);
+
                     lastOperator = lastOperatorAfterEqual;
                     result = doMath();
                     $(".result").text(result);
@@ -227,7 +233,7 @@
 
                 // REMOVE (Testing output)
                 $(".result").text(result);
-                $(".current_number").text(currentNum);
+                
                 $(".last_operator").text(lastOperator);
                 $(".afterEqual").text(afterEqual);
 
@@ -309,7 +315,7 @@
                     result = currentNum;
                     $("#answertext").text(result);
                 }
-                // if after second operator press of a calculations
+                // if after second operator press (including equal) of a calculations
                 else if (result != null && currentNum != null)
                 {
                     currentNum = Number(currentNum);
