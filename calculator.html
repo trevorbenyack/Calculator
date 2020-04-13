@@ -50,6 +50,7 @@
             color: #e8e9e9;
             padding: 6% 0;
 
+            /*Disallows user from selecting text*/
             user-select: none; /* supported by Chrome and Opera */
             -webkit-user-select: none; /* Safari */
             -khtml-user-select: none; /* Konqueror HTML */
@@ -295,13 +296,18 @@
             // calculation to perform after the following operator or the equal button
             // has been pressed.
             function operatorFunction(operatorString){
+                // very first operator
                 if (lastOperator == null) {
-                    lastOperator = $(operatorString).text()
+                    lastOperator = $(operatorString).text();
+                }
+                // if a second operator is pressed in a row
+                else if (lastOperator != null & currentNum == null){
+                    lastOperator = $(operatorString).text();
                 }
                 else {
                     result = doMath();
-                    $("#answertext").text(result)
-                    lastOperator = $(operatorString).text()
+                    $("#answertext").text(result);
+                    lastOperator = $(operatorString).text();
                 }
 
                 // REMOVE: TESTING OUTPUT
