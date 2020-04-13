@@ -93,6 +93,10 @@
             font-size: 30px;
             color: red;
         }
+        .afterEqual {
+            font-size: 30px;
+            color: red;
+        }
         
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -124,6 +128,7 @@
                 $(".result").text(result)
                 $(".current_number").text(currentNum)
                 $(".last_operator").text(lastOperator)
+                $(".afterEqual").text(afterEqual)
 
             });
             
@@ -144,44 +149,52 @@
                 currentNumFunction()
                 operatorFunction('#plus');
                 currentNum = null;
+                afterEqual = false;
                 
                 // REMOVE (Testing output)
                 $(".result").text(result)
                 $(".current_number").text(currentNum)
                 $(".last_operator").text(lastOperator)
+                $(".afterEqual").text(afterEqual)
 
             });
             $("#minus").click(function(){
                 currentNumFunction()
                 operatorFunction('#minus');
                 currentNum = null;
+                afterEqual = false;
 
                 // REMOVE (Testing output)
                 $(".result").text(result)
                 $(".current_number").text(currentNum)
                 $(".last_operator").text(lastOperator)
+                $(".afterEqual").text(afterEqual)
 
             });
             $("#multiply").click(function(){
                 currentNumFunction()
                 operatorFunction('#multiply');
                 currentNum = null;
+                afterEqual = false;
 
                 // REMOVE (Testing output)
                 $(".result").text(result)
                 $(".current_number").text(currentNum)
                 $(".last_operator").text(lastOperator)
+                $(".afterEqual").text(afterEqual)
 
             });
             $("#divide").click(function(){
                 currentNumFunction()
                 operatorFunction('#divide');
                 currentNum = null;
+                afterEqual = false;
 
                 // REMOVE (Testing output)
                 $(".result").text(result)
                 $(".current_number").text(currentNum)
                 $(".last_operator").text(lastOperator)
+                $(".afterEqual").text(afterEqual)
 
             });
 
@@ -212,12 +225,11 @@
                     afterEqual = true;
                 }
 
-                
-
                 // REMOVE (Testing output)
                 $(".result").text(result);
                 $(".current_number").text(currentNum);
                 $(".last_operator").text(lastOperator);
+                $(".afterEqual").text(afterEqual);
 
             });
 
@@ -246,6 +258,7 @@
                 $(".result").text(result);
                 $(".current_number").text(currentNum);
                 $(".last_operator").text(lastOperator);
+                $(".afterEqual").text(afterEqual);
             });
             // The next two operators transform the current result
             // piggy-backs off of the operators set-up
@@ -261,6 +274,7 @@
                 $(".result").text(result);
                 $(".current_number").text(currentNum);
                 $(".last_operator").text(lastOperator);
+                $(".afterEqual").text(afterEqual);
             });
             $("#percentage").click(function(){
                 currentNumFunction()
@@ -272,6 +286,7 @@
                 $(".result").text(result);
                 $(".current_number").text(currentNum);
                 $(".last_operator").text(lastOperator);
+                $(".afterEqual").text(afterEqual);
             });
 
             // used to determine correct result to use in initial calcuation
@@ -286,7 +301,7 @@
                     $("#answertext").text(result);
                     afterEqual = false;
                 }
-                // if first operator press after page refresh or after "C" button press
+                // if after first operator press after page refresh or after "C" button press
                 else if (result == null && currentNum != null)
                 {
                     currentNum = Number(currentNum);
@@ -294,7 +309,7 @@
                     result = currentNum;
                     $("#answertext").text(result);
                 }
-                // if second operator press of a calculations
+                // if after second operator press of a calculations
                 else if (result != null && currentNum != null)
                 {
                     currentNum = Number(currentNum);
@@ -306,6 +321,7 @@
                 $(".result").text(result);
                 $(".current_number").text(currentNum);
                 $(".last_operator").text(lastOperator);
+                $(".afterEqual").text(afterEqual);
             }
             
             // because of the way a user enters the input, the calculation 
@@ -333,9 +349,10 @@
                 }
 
                 // REMOVE: TESTING OUTPUT
-                $(".result").text(result)
-                $(".current_number").text(currentNum)
-                $(".last_operator").text(lastOperator)
+                $(".result").text(result);
+                $(".current_number").text(currentNum);
+                $(".last_operator").text(lastOperator);
+                $(".afterEqual").text(afterEqual);
             }
 
             // because math
@@ -379,6 +396,7 @@
     currentNum is <div class="current_number">boo</div>
     lastOperator is <div class="last_operator">boo</div>
     this is console stuff <div class="console">boo</div>
+    afterEqual is <div class="afterEqual">boo</div>
 </body>
 
 </html>
