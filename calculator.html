@@ -115,7 +115,7 @@
             // Everytime a number is pressed, it begins to build a string.
             // This string is cleared out throughout the program after it is used.
             $(".number").click(function(){
-                c_counter = 0;
+                c_counter = 0; // resets the C/AC counter (as if it's never been clicked)
                 $("#C").text("C")
                 if (currentNum == null) // prevents "null" from being the start of the string
                 {
@@ -124,7 +124,8 @@
                 currentNum += ($(this).text()); // number-string builder
                 $("#answertext").text(currentNum); // prints to the calculator after each press
 
-                // REMOVE (Testing output)
+                //REMOVE (TEST OUTPUT)
+                $(".current_number").text(currentNum);
                 $(".result").text(result)
                 $(".current_number").text(currentNum)
                 $(".last_operator").text(lastOperator)
@@ -145,6 +146,9 @@
             // 
             // after the arithmetic is performed, currentNum is set back to null
             // so that the next number can be entered.
+            //
+            // afterEqual is used to help determine which stage of the calculation
+            // the user is at. 
             $("#plus").click(function(){
                 currentNumFunction()
                 operatorFunction('#plus');
@@ -274,10 +278,18 @@
             // uses currentNumFunction to get the appropriate
             // result value to perform the transformation on
             $("#plus_minus").click(function(){
-                currentNumFunction()
-                result = result * -1;
-                currentNum = null;
-                $("#answertext").text(result)
+                
+                if (currentNum != null && afterEqual == false) {
+                    negNumber = "-" + currentNum
+                    currentNum = negNumber
+                    $("#answertext").text(currentNum)
+                    $(".console").text("I'm in plusMinus if")
+                }
+                else {
+                    result = result * (-1);
+                    $("#answertext").text(result)
+                    $(".console").text("I'm in plusMinus else")
+                }
 
                 // REMOVE (Testing output)
                 $(".result").text(result);
@@ -286,10 +298,18 @@
                 $(".afterEqual").text(afterEqual);
             });
             $("#percentage").click(function(){
-                currentNumFunction()
-                result = result * 100;
-                currentNum = null;
-                $("#answertext").text(result + "%")
+
+                if (currentNum != null && afterEqual == false) {
+                    
+                    currentNum = Number(currentNum) / 100
+                    $("#answertext").text(currentNum)
+                    $(".console").text("I'm in percentage if")
+                }
+                else {
+                    result = result / 100;
+                    $("#answertext").text(result)
+                    $(".console").text("I'm in percentage else")
+                }
 
                 // REMOVE (Testing output)
                 $(".result").text(result);
