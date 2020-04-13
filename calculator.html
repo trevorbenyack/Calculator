@@ -116,6 +116,7 @@
             // This string is cleared out throughout the program after it is used.
             $(".number").click(function(){
                 c_counter = 0; // resets the C/AC counter (as if it's never been clicked)
+
                 $("#C").text("C")
                 if (currentNum == null) // prevents "null" from being the start of the string
                 {
@@ -125,15 +126,11 @@
                 $("#answertext").text(currentNum); // prints to the calculator after each press
 
                 //REMOVE (TEST OUTPUT)
-                $(".current_number").text(currentNum);
-                $(".result").text(result)
-                $(".current_number").text(currentNum)
-                $(".last_operator").text(lastOperator)
-                $(".afterEqual").text(afterEqual)
+                testOutput();
 
             });
             
-            // this next section encompases the operators
+            // This next section encompases the operators:
             // each operator calls the currentNumFunction which converts
             // the currentNum string into a number.
             // during the inital number-entry of a calculation,
@@ -149,57 +146,29 @@
             //
             // afterEqual is used to help determine which stage of the calculation
             // the user is at. 
-            $("#plus").click(function(){
-                currentNumFunction()
-                operatorFunction('#plus');
-                currentNum = null;
-                afterEqual = false;
-                
-                // REMOVE (Testing output)
-                $(".result").text(result)
-                $(".current_number").text(currentNum)
-                $(".last_operator").text(lastOperator)
-                $(".afterEqual").text(afterEqual)
 
-            });
-            $("#minus").click(function(){
-                currentNumFunction()
-                operatorFunction('#minus');
-                currentNum = null;
-                afterEqual = false;
 
-                // REMOVE (Testing output)
-                $(".result").text(result)
-                $(".current_number").text(currentNum)
-                $(".last_operator").text(lastOperator)
-                $(".afterEqual").text(afterEqual)
+            $(".operator").click(function(){
+                currentNumFunction();
+                // very first operator
+                if (lastOperator == null) {
+                    lastOperator = $(this).text();
+                }
+                // if a second operator is pressed in a row
+                else if (lastOperator != null & currentNum == null){
+                    lastOperator = $(this).text();
+                }
+                else {
+                    result = doMath();
+                    $("#answertext").text(result);
+                    lastOperator = $(this).text();
+                }
 
-            });
-            $("#multiply").click(function(){
-                currentNumFunction()
-                operatorFunction('#multiply');
                 currentNum = null;
                 afterEqual = false;
 
-                // REMOVE (Testing output)
-                $(".result").text(result)
-                $(".current_number").text(currentNum)
-                $(".last_operator").text(lastOperator)
-                $(".afterEqual").text(afterEqual)
-
-            });
-            $("#divide").click(function(){
-                currentNumFunction()
-                operatorFunction('#divide');
-                currentNum = null;
-                afterEqual = false;
-
-                // REMOVE (Testing output)
-                $(".result").text(result)
-                $(".current_number").text(currentNum)
-                $(".last_operator").text(lastOperator)
-                $(".afterEqual").text(afterEqual)
-
+                // REMOVE: TESTING OUTPUT
+                testOutput()
             });
 
             // performs the final arithmetic for the calculation
@@ -211,10 +180,6 @@
                 
                 if (afterEqual == false) {
                     currentNumFunction()
-
-                    // REMOVE (TESTING OUTPUT)
-                    
-
                     result = doMath();
                     $(".result").text(result)
                     $("#answertext").text(result)
@@ -225,8 +190,6 @@
                 }
                 else if (afterEqual == true) {
                     currentNum = currentNumLast;
-
-
                     lastOperator = lastOperatorAfterEqual;
                     result = doMath();
                     $(".result").text(result);
@@ -237,10 +200,7 @@
                 }
 
                 // REMOVE (Testing output)
-                $(".result").text(result);
-                $(".current_number").text(currentNum);
-                $(".last_operator").text(lastOperator);
-                $(".afterEqual").text(afterEqual);
+                testOutput()
 
             });
 
@@ -266,14 +226,15 @@
                 }
 
                 // REMOVE (Testing output)
-                $(".result").text(result);
-                $(".current_number").text(currentNum);
-                $(".last_operator").text(lastOperator);
-                $(".afterEqual").text(afterEqual);
+                testOutput()
             });
+
             // The next two operators transform either the currentNum 
             // or current result. The idea is to take whatever is being 
-            // displayed in the answer (either currentNum or result) area and transform it. 
+            // displayed in the answer (either currentNum or result) area and transform it.
+            // The if/else structure determines whether the text being displayed
+            // is currentNum or result.
+            // Logic:
             // currentNum is set to null after any operator is pressed, so if it is not
             // null, then that means it is the current value shown in the display.
             // if it is null, then result is being shown in the display.
@@ -292,10 +253,7 @@
                 }
 
                 // REMOVE (Testing output)
-                $(".result").text(result);
-                $(".current_number").text(currentNum);
-                $(".last_operator").text(lastOperator);
-                $(".afterEqual").text(afterEqual);
+                testOutput()
             });
             $("#percentage").click(function(){
 
@@ -312,10 +270,7 @@
                 }
 
                 // REMOVE (Testing output)
-                $(".result").text(result);
-                $(".current_number").text(currentNum);
-                $(".last_operator").text(lastOperator);
-                $(".afterEqual").text(afterEqual);
+                testOutput()
             });
 
             // used to determine correct result to use in initial calcuation
@@ -347,10 +302,7 @@
                 }
 
                 // REMOVE (TESTING OUTPUT)
-                $(".result").text(result);
-                $(".current_number").text(currentNum);
-                $(".last_operator").text(lastOperator);
-                $(".afterEqual").text(afterEqual);
+                testOutput()
             }
             
             // because of the way a user enters the input, the calculation 
@@ -362,27 +314,7 @@
             // is stored as lastOperator and then it is used to determine which
             // calculation to perform after the following operator or the equal button
             // has been pressed.
-            function operatorFunction(operatorString){
-                // very first operator
-                if (lastOperator == null) {
-                    lastOperator = $(operatorString).text();
-                }
-                // if a second operator is pressed in a row
-                else if (lastOperator != null & currentNum == null){
-                    lastOperator = $(operatorString).text();
-                }
-                else {
-                    result = doMath();
-                    $("#answertext").text(result);
-                    lastOperator = $(operatorString).text();
-                }
-
-                // REMOVE: TESTING OUTPUT
-                $(".result").text(result);
-                $(".current_number").text(currentNum);
-                $(".last_operator").text(lastOperator);
-                $(".afterEqual").text(afterEqual);
-            }
+            
 
             // because math
             function doMath(){
@@ -393,6 +325,14 @@
                         case "/": result = result / Number(currentNum); break;
                     };
                     return result;
+            }
+
+            function testOutput(){
+                $(".current_number").text(currentNum);
+                $(".result").text(result)
+                $(".current_number").text(currentNum)
+                $(".last_operator").text(lastOperator)
+                $(".afterEqual").text(afterEqual)
             }
         });
     </script>
